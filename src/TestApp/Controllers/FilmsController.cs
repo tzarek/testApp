@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using TestApp.Models;
-using TestApp.Repositories;
 using TestApp.Services.Abstractions;
 using Microsoft.AspNet.Identity;
 using PagedList;
-using PagedList.Mvc;
 
 namespace TestApp.Controllers
 {    

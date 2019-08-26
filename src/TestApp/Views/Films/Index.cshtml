@@ -1,4 +1,5 @@
 ﻿@model PagedList.IPagedList<TestApp.Models.Film>
+@using Microsoft.AspNet.Identity;
 @using PagedList.Mvc;
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
@@ -11,12 +12,15 @@
     <h3 align="center">Каталог фильмов</h3>
 </div>
 
-<div>
-    <td><p><a href="/Films/Create" class="btn btn-primary">Добавить фильм</a></p></td>
-</div>
+@if (!User.Identity.IsAuthenticated)
+{        
+    <div>
+        <a href="/Films/Create" class="btn btn-primary">Добавить фильм</a>
+    </div>
+}
 
-<div class="col-md-12">
 
+<div class="col-md-12">    
     <table id="filmsTable" class="table">
         <tr class="header">
             <td class="col-md-2"><p>Название фильма</p></td>
@@ -44,8 +48,8 @@
                         </td>
                     }
                 }
-                
-                <td><p><a href="/Films/Get/@f.Id">Подробнее</a></p></td>                    
+
+                <td><p><a href="/Films/Get/@f.Id">Подробнее</a></p></td>
 
             </tr>
         }

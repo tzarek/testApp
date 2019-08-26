@@ -256,7 +256,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Films\About.cshtml" />
     <Content Include="Views\Films\Contact.cshtml" />
-    <Content Include="Views\Films\Index.cshtml" />
+    <Content Include="Views\Films\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
