@@ -13,29 +13,30 @@ using PagedList.Mvc;
 namespace TestApp.Controllers
 {    
     public class FilmsController : Controller
-    {                       
-        public ActionResult Index(int? page)
+    {
+        private readonly IFilmsRepository _filmsRepository;
 
+        public FilmsController(IFilmsRepository filmsRepository)
+        {
+            _filmsRepository = filmsRepository;
+        }
+
+        [HttpGet]
+        public ActionResult Index(int? page)
         {
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 
-            List<Film> films = new List<Film>();
-            using (FilmContext db = new FilmContext())
-            {
-                films = db.Films.ToList();
-            }
-                return View(films.ToPagedList(pageNumber, pageSize));
+            var films = _filmsRepository.GetAllFilms();
+            return View(films.ToPagedList(pageNumber, pageSize));
         }
 
-             
+        
+        [HttpGet]
         public ActionResult Get(int id)
-        {
-            Film film = new Film();
-            using (FilmContext db = new FilmContext())
-            {
-                film = db.Films.Where(f => f.Id == id).SingleOrDefault();
-            }
+        {          
+            var film = _filmsRepository.GetFilm(id);
+            
             return View("Film", film);
         }
 
@@ -43,7 +44,7 @@ namespace TestApp.Controllers
         [HttpGet]
         public ActionResult Create()
         {          
-            return View();
+            return View("Create");
         }
 
         [HttpPost]
@@ -54,27 +55,22 @@ namespace TestApp.Controllers
                 film.Poster = new byte[image.ContentLength];
                 image.InputStream.Read(film.Poster, 0, image.ContentLength);
             }
-
             film.UserId = User.Identity.GetUserId();
-
-            IFilmsRepository filmsRepository = new FilmsRepository();
-            filmsRepository.CreateFilm(film);
+            
+            _filmsRepository.CreateFilm(film);
             return RedirectToAction("Index");            
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Film film = new Film();
-            IFilmsRepository filmsRepository = new FilmsRepository();
-            film = filmsRepository.GetFilm(id);
+            var film =  _filmsRepository.GetFilm(id);
             return View("Edit", film);            
         }
 
         [HttpPost]
         public ActionResult Edit(Film film, HttpPostedFileBase image)
-        {
-            IFilmsRepository filmsRepository = new FilmsRepository();
+        {            
 
             if (image != null)
             {
@@ -83,34 +79,19 @@ namespace TestApp.Controllers
             }
             else
             {
-                film.Poster = filmsRepository.GetFilm(film.Id).Poster;
+                film.Poster = _filmsRepository.GetFilm(film.Id).Poster;
             }
             film.UserId = User.Identity.GetUserId();                      
             
-            filmsRepository.Update(film);
+            _filmsRepository.Update(film);
             return RedirectToAction("Index", film.Id);
         }
 
         [HttpGet]
         public ActionResult Delete(int id)
-        {
-            IFilmsRepository filmsRepository = new FilmsRepository();
-            filmsRepository.Delete(id);
+        {            
+            _filmsRepository.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
     }
 }
