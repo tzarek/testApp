@@ -12,10 +12,12 @@
     <h3 align="center">Каталог фильмов</h3>
 </div>
 
-@if (!User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated)
 {        
-    <div>
-        <a href="/Films/Create" class="btn btn-primary">Добавить фильм</a>
+    <div>        
+        <p>
+            <a href="/Films/Create" class="btn btn-primary">Добавить фильм</a>
+        </p>        
     </div>
 }
 
