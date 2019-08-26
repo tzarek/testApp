@@ -3,7 +3,6 @@ using System.Web.Mvc;
 using TestApp.Models;
 using TestApp.Services.Abstractions;
 using Microsoft.AspNet.Identity;
-using PagedList;
 
 namespace TestApp.Controllers
 {    

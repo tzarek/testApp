@@ -1,7 +1,15 @@
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin;
 using System;
+using System.Data.Entity;
+using TestApp.Controllers;
+using TestApp.Models;
 using TestApp.Repositories;
 using TestApp.Services.Abstractions;
 using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace TestApp
 {
@@ -38,6 +46,13 @@ namespace TestApp
         public static void RegisterTypes(IUnityContainer container)
         {           
             container.RegisterType<IFilmsRepository, FilmsRepository>();
+
+            container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
+            container.RegisterType<UserManager<ApplicationUser>>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<AccountController>(new InjectionConstructor());
+
         }
     }
 }
