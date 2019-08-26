@@ -22,8 +22,8 @@ namespace TestApp.Controllers
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 
-            var films = _filmsRepository.GetAllFilms();
-            return View(films.ToPagedList(pageNumber, pageSize));
+            var films = _filmsRepository.GetFilmsByPages(pageNumber, pageSize);
+            return View(films);
         }
 
         

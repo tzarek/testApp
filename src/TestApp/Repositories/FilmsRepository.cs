@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TestApp.Models;
 using TestApp.Services.Abstractions;
+using PagedList;
 
 namespace TestApp.Repositories
 {
@@ -17,12 +18,12 @@ namespace TestApp.Repositories
             }            
         }
 
-        public IQueryable<Film> GetAllFilms()
+        public IEnumerable<Film> GetFilmsByPages(int pageNumber, int pageSize)
         {
-            IQueryable<Film> films;
+            IPagedList<Film> films;
             using (FilmContext db = new FilmContext())
             {
-                films = db.Films;
+                films = db.Films.OrderBy(f => f.Id).ToPagedList(pageNumber, pageSize);
             }
             return films;
         }

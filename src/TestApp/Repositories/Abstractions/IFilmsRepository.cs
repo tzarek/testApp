@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using PagedList;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestApp.Models;
@@ -7,7 +8,7 @@ namespace TestApp.Services.Abstractions
 {
     public interface IFilmsRepository
     {
-        IQueryable<Film> GetAllFilms();
+        IEnumerable<Film> GetFilmsByPages(int pageNumber, int pageSize);
 
         Film GetFilm(int id);
 
