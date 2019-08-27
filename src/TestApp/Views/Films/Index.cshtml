@@ -25,38 +25,34 @@
 <div class="col-md-12">    
     <table id="filmsTable" class="table">
         <tr class="header">
-            <td class="col-md-2"><p>Название фильма</p></td>
-            <td class="col-md-2"><p>Описание</p></td>
-            <td class="col-md-2"><p>Год выпуска</p></td>
+            <td class="col-md-3"><p>Название фильма</p></td>
+            <td class="col-md-3"><p>Описание</p></td>
+            <td class="col-md-3"><p>Год выпуска</p></td>
             <td>Постер</td>
-            <td></td>
         </tr>
         @foreach (TestApp.Models.Film f in Model)
         {
             <tr>
-                <td><p>@f.Name</p></td>
+	            <td><p><a href="/Films/Get/@f.Id">@f.Name</a></p></td>
                 <td><p>@f.Description</p></td>
                 <td><p>@f.Year</p></td>
 
-                @{ if (f.Poster != null)
-                    {
-                        <td>
-                            @{
+                @if (f.Poster != null)
+                {
+                    <td>
+                        @{
 
-                                var base64 = Convert.ToBase64String(f.Poster);
-                                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                            }
-                            <img src="@imgSrc" class="img-thumbnail" style="max-height: 200px" />
-                        </td>
-                    }
+                            var base64 = Convert.ToBase64String(f.Poster);
+                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                        }
+                        <img src="@imgSrc" class="img-thumbnail" style="max-height: 200px" />
+                    </td>
                 }
-
-                <td><p><a href="/Films/Get/@f.Id">Подробнее</a></p></td>
-
+                
             </tr>
         }
     </table>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
 
     @Html.PagedListPager(Model, page => Url.Action("Index",
         new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

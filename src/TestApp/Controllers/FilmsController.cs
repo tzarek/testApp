@@ -22,7 +22,7 @@ namespace TestApp.Controllers
             int pageNumber = (page ?? 1);
 
             var films = _filmsRepository.GetFilmsByPages(pageNumber, pageSize);
-            return View(films);
+            return View("Index", films);
         }
 
         
